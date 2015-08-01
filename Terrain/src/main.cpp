@@ -73,8 +73,7 @@ int main()
 	glm::mat4 projection = glm::perspectiveFov(45.0f, 1280.0f, 720.0f, 0.01f, 100.0f);
 	glm::mat4 view = glm::lookAt(glm::vec3(4.0f, 3.0f, 3.0f), glm::vec3(8.0f, 0.0f, 8.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Terrain* t = new Terrain(noise, projection, view, 4, 4);
-	Chunk c(0, 0, 16, projection, view, noise);
+	Terrain* t = new Terrain(noise, projection, view, 16, 16);
 
 	/********************
 	******MAIN_LOOP******
@@ -97,7 +96,6 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		t->render();
-		c.render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

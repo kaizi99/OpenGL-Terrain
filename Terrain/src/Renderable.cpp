@@ -64,6 +64,7 @@ void Renderable::storeVectorsInAttributeList(std::vector<glm::vec3> data, int at
 	glGenBuffers(1, &vboID);
 	glBindBuffer(GL_ARRAY_BUFFER, vboID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * data.size(), data.data(), GL_STATIC_DRAW);
+	glEnableVertexAttribArray(attributeList);
 	glVertexAttribPointer(attributeList, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
