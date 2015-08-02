@@ -35,6 +35,7 @@ public:
 			for (int j = 0; j <= size; j++)
 			{
 				glm::vec3 vertex(j, noise.GetValue(j + .5 + x * (size - 1), .5, i + .5 + y * (size - 1)), i);
+				//glm::vec3 vertex(j, 0, i);
 				vertecies.push_back(vertex);
 			}
 		}
@@ -62,7 +63,7 @@ public:
 		glm::vec3 translation(x * (size - 1), 0, y * (size - 1));
 		model = glm::translate(model, translation);
 
-		Renderable::initialize(vertecies, indices, (std::vector<glm::vec3>) 0);
+		Renderable::initialize(vertecies, indices);
 		Renderable::setCustomModelMatrix(model);
 	}
 	~Chunk();

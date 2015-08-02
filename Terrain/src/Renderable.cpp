@@ -22,6 +22,30 @@ Renderable::Renderable(glm::mat4 projection, glm::mat4 view, Shader* shader)
 	model = glm::mat4(1.0f);
 }
 
+void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices)
+{
+	std::vector<glm::vec3> normals;
+
+	for (int i = 0; i < indices.size(); i += 3)
+	{
+		glm::vec3 normal = computeNormal(vertecies[indices[i]], vertecies[indices[i + 1]], vertecies[indices[i + 2]]);
+		normals.push_back(normal);
+		normals.push_back(normal);
+		normals.push_back(normal);
+	}
+
+	vertexCount = indices.size();
+
+	glGenVertexArrays(1, &vaoID);
+	glBindVertexArray(vaoID);
+
+	bindIndicesBuffer(indices);
+	storeVectorsInAttributeList(vertecies, 0);
+	storeVectorsInAttributeList(normals, 1);
+
+	glBindVertexArray(0);
+}
+
 void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices, std::vector<glm::vec3> normals)
 {
 	vertexCount = indices.size();
@@ -31,7 +55,7 @@ void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> i
 
 	bindIndicesBuffer(indices);
 	storeVectorsInAttributeList(vertecies, 0);
-	//storeVectorsInAttributeList(normals, 1);
+	storeVectorsInAttributeList(normals, 1);
 
 	glBindVertexArray(0);
 }
@@ -75,4 +99,17 @@ void Renderable::bindIndicesBuffer(std::vector<int> data)
 	glGenBuffers(1, &indicesBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.size() * sizeof(int), data.data(), GL_STATIC_DRAW);
+}
+
+glm::vec3 Renderable::computeNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3)
+{
+	glm::vec3 V1 = v2 - v1;
+	glm::vec3 V2 = v3 - v1;
+	glm::vec3 surfaceNormal;
+
+	surfaceNormal.x = (V1.y * V2.z) - (V1.z * V2.y);
+	surfaceNormal.y = -((V2.z * V1.x) - (V2.x * V1.z));
+	surfaceNormal.z = (V1.x * V2.y) - (V1.y * V2.x);
+
+	return glm::normalize(surfaceNormal);
 }

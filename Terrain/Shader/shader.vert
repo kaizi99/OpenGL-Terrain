@@ -15,6 +15,7 @@
 #version 420 core
 
 layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 1) in vec3 surfaceNormal;
 
 uniform mat4 M_V;
 uniform mat4 M_M;
@@ -27,6 +28,6 @@ void main()
 {
 	vec4 v = vec4(vertexPosition_modelspace, 1);
 	clipSpace = M_P * M_V * M_M * v;
-	normal = (M_V * M_M * vec4(vertexPosition_modelspace, 0)).xyz;
+	normal = surfaceNormal;
 	gl_Position = clipSpace;
 }

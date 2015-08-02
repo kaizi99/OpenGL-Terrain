@@ -14,7 +14,7 @@
 
 #include "Terrain.h"
 
-Terrain::Terrain(noise::module::Perlin noise, glm::mat4 projection, glm::mat4 view, int terrainSize, int chunkSize)
+Terrain::Terrain(glm::mat4 projection, glm::mat4 view, int terrainSize, int chunkSize)
 {
 	this->chunkSize = chunkSize;
 	this->projection = projection;

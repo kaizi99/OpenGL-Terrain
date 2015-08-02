@@ -21,7 +21,7 @@
 class Terrain
 {
 public:
-	Terrain(noise::module::Perlin noise, glm::mat4 projection, glm::mat4 view, int terrainSize, int chunkSize);
+	Terrain(glm::mat4 projection, glm::mat4 view, int terrainSize, int chunkSize);
 	void generateNewChunk(glm::vec2 position);
 	void render();
 private:

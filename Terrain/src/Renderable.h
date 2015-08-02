@@ -16,6 +16,7 @@
 #include <vector>
 #include <gl\glew.h>
 #include <glm\glm.hpp>
+#include <glm\geometric.hpp>
 #include "Shader\Shader.h"
 
 class Renderable
@@ -24,6 +25,7 @@ public:
 	Renderable(glm::mat4 projection, glm::mat4 view, Shader* shader);
 	void setCustomModelMatrix(glm::mat4 model);
 	void initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices, std::vector<glm::vec3> normals);
+	void initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices);
 	void updateView(glm::mat4 view);
 	void render();
 protected:
@@ -35,4 +37,5 @@ protected:
 	GLuint vaoID;
 	void storeVectorsInAttributeList(std::vector<glm::vec3> data, int attributeList);
 	void bindIndicesBuffer(std::vector<int> data);
+	glm::vec3 computeNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 };
