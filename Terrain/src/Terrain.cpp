@@ -14,18 +14,18 @@
 
 #include "Terrain.h"
 
-Terrain::Terrain(glm::mat4 projection, glm::mat4 view, int terrainSize, int chunkSize)
+Terrain::Terrain(int terrainSize, int chunkSize, Renderer* renderer)
 {
+	this->renderer = renderer;
 	this->chunkSize = chunkSize;
-	this->projection = projection;
-	this->view = view;
 	for(int i = 0; i <= terrainSize; i++)
 	{
 		for(int j = 0; j <= terrainSize; j++)
 		{
-			Chunk* c = new Chunk(i, j, chunkSize, projection, view, noise);
+			Chunk* c = new Chunk(i, j, chunkSize);
 			chunks.push_back(c);
 			generatedChunks.push_back(glm::vec2(i, j));
+			renderer->push_back_entities(c);
 		}
 	}	
 }
@@ -36,15 +36,8 @@ void Terrain::generateNewChunk(glm::vec2 position)
 		if(chunk == position)
 			return;
 			
-	Chunk* c = new Chunk(position.x, position.y, chunkSize, projection, view, noise);
+	Chunk* c = new Chunk(position.x, position.y, chunkSize);
 	chunks.push_back(c);
 	generatedChunks.push_back(position);
-}
-
-void Terrain::render()
-{
-	for each(Chunk* c in chunks)
-	{
-		c->render();
-	}
+	renderer->push_back_entities(c);
 }

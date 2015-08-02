@@ -21,21 +21,21 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <noise\noise.h>
 #include "Shader\StandartShader.h"
-#include "Renderable.h"
+#include "Engine\Entity.h"
 
-class Chunk : public Renderable
+class Chunk : public Entity
 {
 public:
-	Chunk(int x, int y, unsigned int size, glm::mat4 projection, glm::mat4 view, noise::module::Perlin noise) : Renderable(projection, view, new Shader("Shader/shader.vert", "Shader/shader.frag"))
+	Chunk(int x, int y, unsigned int size) : Entity(new Shader("Shader/shader.vert", "Shader/shader.frag"))
 	{
-		noise.SetFrequency(.05);
+		noise::module::Perlin noise;
+		noise.SetFrequency(.07);
 		//Terrain vertecies and indecies generation
 		for (int i = 0; i <= size; i++)
 		{
 			for (int j = 0; j <= size; j++)
 			{
 				glm::vec3 vertex(j, noise.GetValue(j + .5 + x * (size - 1), .5, i + .5 + y * (size - 1)), i);
-				//glm::vec3 vertex(j, 0, i);
 				vertecies.push_back(vertex);
 			}
 		}
@@ -59,13 +59,15 @@ public:
 				indices.push_back(i6 - 1);
 			}
 		}
-		model = glm::mat4(1.0f);
-		glm::vec3 translation(x * (size - 1), 0, y * (size - 1));
-		model = glm::translate(model, translation);
+		Entity::position = glm::vec3(x * (size - 1), 0, y * (size - 1));
 
-		Renderable::initialize(vertecies, indices);
-		Renderable::setCustomModelMatrix(model);
+		//model = glm::mat4(1.0f);
+		//glm::vec3 translation(x * (size - 1), 0, y * (size - 1));
+		//model = glm::translate(model, translation);
+
+		Entity::initialize(vertecies, indices);
 	}
+	glm::mat4 getModelMatrix();
 	~Chunk();
 private:
 	int x, y;

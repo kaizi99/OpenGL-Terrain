@@ -12,17 +12,14 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
-#include "Renderable.h"
+#include "Entity.h"
 
-Renderable::Renderable(glm::mat4 projection, glm::mat4 view, Shader* shader)
+Entity::Entity(Shader* shader)
 {
-	this->projection = projection;
-	this->view = view;
 	this->shader = shader;
-	model = glm::mat4(1.0f);
 }
 
-void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices)
+void Entity::initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices)
 {
 	std::vector<glm::vec3> normals;
 
@@ -46,7 +43,7 @@ void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> i
 	glBindVertexArray(0);
 }
 
-void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices, std::vector<glm::vec3> normals)
+void Entity::initialize(std::vector<glm::vec3> vertecies, std::vector<int> indices, std::vector<glm::vec3> normals)
 {
 	vertexCount = indices.size();
 
@@ -60,18 +57,11 @@ void Renderable::initialize(std::vector<glm::vec3> vertecies, std::vector<int> i
 	glBindVertexArray(0);
 }
 
-void Renderable::updateView(glm::mat4 view)
+void Entity::render(glm::mat4 projection, glm::mat4 view)
 {
-	this->view = view;
-}
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, position);
 
-void Renderable::setCustomModelMatrix(glm::mat4 model)
-{
-	this->model = model;
-}
-
-void Renderable::render()
-{
 	shader->useShader();
 	shader->sendMatreciesToShader(projection, view, model);
 
@@ -82,7 +72,7 @@ void Renderable::render()
 	shader->disableShader();
 }
 
-void Renderable::storeVectorsInAttributeList(std::vector<glm::vec3> data, int attributeList)
+void Entity::storeVectorsInAttributeList(std::vector<glm::vec3> data, int attributeList)
 {
 	GLuint vboID;
 	glGenBuffers(1, &vboID);
@@ -93,7 +83,7 @@ void Renderable::storeVectorsInAttributeList(std::vector<glm::vec3> data, int at
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Renderable::bindIndicesBuffer(std::vector<int> data)
+void Entity::bindIndicesBuffer(std::vector<int> data)
 {
 	GLuint indicesBuffer;
 	glGenBuffers(1, &indicesBuffer);
@@ -101,7 +91,7 @@ void Renderable::bindIndicesBuffer(std::vector<int> data)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.size() * sizeof(int), data.data(), GL_STATIC_DRAW);
 }
 
-glm::vec3 Renderable::computeNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3)
+glm::vec3 Entity::computeNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3)
 {
 	glm::vec3 V1 = v2 - v1;
 	glm::vec3 V2 = v3 - v1;

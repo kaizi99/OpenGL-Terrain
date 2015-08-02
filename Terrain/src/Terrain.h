@@ -17,16 +17,15 @@
 #include <noise\noise.h>
 #include <glm\glm.hpp>
 #include "Chunk.h"
+#include "Engine\Renderer.h"
 
 class Terrain
 {
 public:
-	Terrain(glm::mat4 projection, glm::mat4 view, int terrainSize, int chunkSize);
+	Terrain(int terrainSize, int chunkSize, Renderer* renderer);
 	void generateNewChunk(glm::vec2 position);
-	void render();
 private:
-	noise::module::Perlin noise;
-	glm::mat4 projection, view, model;
+	Renderer* renderer;
 	std::vector<Chunk*> chunks;
 	std::vector<glm::vec2> generatedChunks;
 	int chunkSize;
