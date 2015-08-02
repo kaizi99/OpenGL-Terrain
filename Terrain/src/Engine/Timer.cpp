@@ -19,7 +19,6 @@ Timer::Timer()
 	lastTime = glfwGetTime();
 }
 
-
 Timer::~Timer()
 {
 }

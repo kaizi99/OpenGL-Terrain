@@ -85,7 +85,7 @@ GLFWwindow* init()
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glClearColor(0.4f, 0.6f, 0.9f, 1.0f);
 

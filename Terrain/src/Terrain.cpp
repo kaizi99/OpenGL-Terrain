@@ -22,7 +22,7 @@ Terrain::Terrain(int terrainSize, int chunkSize, Renderer* renderer)
 	{
 		for(int j = 0; j <= terrainSize; j++)
 		{
-			Chunk* c = new Chunk(i, j, chunkSize);
+			Chunk* c = new Chunk(i, j, chunkSize, 8);
 			chunks.push_back(c);
 			generatedChunks.push_back(glm::vec2(i, j));
 			renderer->push_back_entities(c);
@@ -36,7 +36,7 @@ void Terrain::generateNewChunk(glm::vec2 position)
 		if(chunk == position)
 			return;
 			
-	Chunk* c = new Chunk(position.x, position.y, chunkSize);
+	Chunk* c = new Chunk(position.x, position.y, chunkSize, 8);
 	chunks.push_back(c);
 	generatedChunks.push_back(position);
 	renderer->push_back_entities(c);

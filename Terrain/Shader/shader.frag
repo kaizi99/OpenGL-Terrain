@@ -20,6 +20,6 @@ in vec3 normal;
 void main()
 {
 	vec3 light = cos(cross(normal, vec3(1, -3, 4)));
-	color = vec3(0, 1, 0) * light;
+	color = vec3(0, 0, 1) * light;
 	//color = vec3(1, 0, 0);
 }

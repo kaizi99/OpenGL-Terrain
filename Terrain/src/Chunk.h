@@ -26,26 +26,27 @@
 class Chunk : public Entity
 {
 public:
-	Chunk(int x, int y, unsigned int size) : Entity(new Shader("Shader/shader.vert", "Shader/shader.frag"))
+	Chunk(int x, int y, unsigned int sizeOfChunk, unsigned int quadInOne) : Entity(new Shader("Shader/shader.vert", "Shader/shader.frag"))
 	{
 		noise::module::Perlin noise;
-		noise.SetFrequency(.07);
+		noise.SetFrequency(.2);
 		//Terrain vertecies and indecies generation
-		for (int i = 0; i <= size; i++)
+		for (double i = 0; i <= sizeOfChunk; i += (1 / (double)quadInOne))
 		{
-			for (int j = 0; j <= size; j++)
+			for (double j = 0; j <= sizeOfChunk; j += (1 / (double)quadInOne))
 			{
 				glm::vec3 vertex(j, noise.GetValue(j + .5 + x * (size - 1), .5, i + .5 + y * (size - 1)), i);
+				//glm::vec3 vertex(j, 0, i);
 				vertecies.push_back(vertex);
 			}
 		}
 
-		for (int i = 1; i < size; i++)
+		for (double i = 1; i < sizeOfChunk * quadInOne; i++)
 		{
-			for (int j = 1; j < size; j++)
+			for (double j = 1; j < sizeOfChunk * quadInOne; j++)
 			{
-				int i1 = (size + 1) * (j - 1) + i;
-				int i2 = (size + 1) * j + i;
+				int i1 = (sizeOfChunk * quadInOne + 1) * (j - 1) + i;
+				int i2 = (sizeOfChunk * quadInOne + 1) * j + i;
 				int i3 = i2 + 1;
 				int i4 = i1 + 1;
 				int i5 = i1;
