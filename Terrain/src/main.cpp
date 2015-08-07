@@ -38,8 +38,9 @@ int main()
 
 	GLFWwindow* window = init();
 	Renderer r(width, height);
-	Terrain* t = new Terrain(4, 16, &r);
+	Terrain* t = new Terrain(2, 16, &r);
 	Timer timer = Timer();
+	timer.writeFPS = true;
 
 	/********************
 	******MAIN_LOOP******

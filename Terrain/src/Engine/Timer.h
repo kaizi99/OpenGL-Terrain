@@ -22,6 +22,7 @@ public:
 	Timer();
 	~Timer();
 	void updateTimer();
+	bool writeFPS = false;
 private:
 	int frames;
 	double lastTime;

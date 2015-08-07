@@ -28,15 +28,22 @@ class Chunk : public Entity
 public:
 	Chunk(int x, int y, unsigned int sizeOfChunk, unsigned int quadInOne) : Entity(new Shader("Shader/shader.vert", "Shader/shader.frag"))
 	{
+		this->x = x;
+		this->y = y;
+		this->size = sizeOfChunk;
 		noise::module::Perlin noise;
 		noise.SetFrequency(.2);
 		//Terrain vertecies and indecies generation
+
+		//x * 16 - 1  y * 16 - 1
+
 		for (double i = 0; i <= sizeOfChunk; i += (1 / (double)quadInOne))
 		{
 			for (double j = 0; j <= sizeOfChunk; j += (1 / (double)quadInOne))
 			{
-				glm::vec3 vertex(j, noise.GetValue(j + .5 + x * (size - 1), .5, i + .5 + y * (size - 1)), i);
-				//glm::vec3 vertex(j, 0, i);
+				glm::vec3 vertex(i, 0, j);
+				vertex.y = noise.GetValue(j + .5 + x * (sizeOfChunk - 1), .5, i + .5 + y * (sizeOfChunk - 1));
+
 				vertecies.push_back(vertex);
 			}
 		}
@@ -60,7 +67,7 @@ public:
 				indices.push_back(i6 - 1);
 			}
 		}
-		Entity::position = glm::vec3(x * (size - 1), 0, y * (size - 1));
+		Entity::position = glm::vec3(x * (sizeOfChunk - 1), 0, y * (sizeOfChunk - 1));
 
 		//model = glm::mat4(1.0f);
 		//glm::vec3 translation(x * (size - 1), 0, y * (size - 1));
